@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #0e0e10, #1a1a1f);
+      color: #eaeaea;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: rgba(23, 23, 26, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 20px;
+      padding: 30px;
+      width: 320px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      color: #d4af37;
+      margin-bottom: 10px;
+    }
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #c6a65e;
+      margin-bottom: 15px;
+    }
+    input, textarea {
+      background: #1e1e22;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #eaeaea;
+      padding: 8px;
+      margin: 6px 0;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+    }
+    button {
+      background-color: #c6a65e;
+      color: #0e0e10;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background-color: #d4af37;
+      transform: scale(1.03);
+    }
+    .links a {
+      color: #c6a65e;
+      text-decoration: none;
+      display: block;
+      margin: 5px 0;
+      transition: 0.3s;
+    }
+    .links a:hover {
+      color: #d4af37;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img id="profilePic" class="profile-pic" src="" alt="Profile Picture">
+    <h1 id="name">Your Name</h1>
+    <p id="dob">DOB: 01/01/2000</p>
+    <p id="phone">Phone: +91XXXXXXXXXX</p>
+    <p id="email">Email: your@email.com</p>
+    <p id="description">This is a short description about me.</p>
+
+    <div class="links">
+      <a id="link1" href="#">WhatsApp Link</a>
+      <a id="link2" href="#">Instagram Link</a>
+    </div>
+
+    <button onclick="editInfo()">Edit</button>
+    <button onclick="accessFiles()">Files</button>
+  </div>
+
+  <script>
+    function editInfo() {
+      const password = prompt('Enter password to edit:');
+      if (password === 'aredwarpalo2543') {
+        const name = prompt('Enter your name:', document.getElementById('name').innerText);
+        const dob = prompt('Enter your DOB:', document.getElementById('dob').innerText.replace('DOB: ', ''));
+        const phone = prompt('Enter your phone number:', document.getElementById('phone').innerText.replace('Phone: ', ''));
+        const email = prompt('Enter your email:', document.getElementById('email').innerText.replace('Email: ', ''));
+        const description = prompt('Enter your description:', document.getElementById('description').innerText);
+        const link1 = prompt('Enter your WhatsApp link:', document.getElementById('link1').href);
+        const link2 = prompt('Enter your Instagram link:', document.getElementById('link2').href);
+
+        document.getElementById('name').innerText = name;
+        document.getElementById('dob').innerText = 'DOB: ' + dob;
+        document.getElementById('phone').innerText = 'Phone: ' + phone;
+        document.getElementById('email').innerText = 'Email: ' + email;
+        document.getElementById('description').innerText = description;
+        document.getElementById('link1').href = link1;
+        document.getElementById('link2').href = link2;
+
+        const pic = confirm('Do you want to change your profile photo?');
+        if (pic) {
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.accept = 'image/*';
+          fileInput.onchange = e => {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+              document.getElementById('profilePic').src = event.target.result;
+              localStorage.setItem('profilePic', event.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+          }
+          fileInput.click();
+        }
+
+        localStorage.setItem('name', name);
+        localStorage.setItem('dob', dob);
+        localStorage.setItem('phone', phone);
+        localStorage.setItem('email', email);
+        localStorage.setItem('description', description);
+        localStorage.setItem('link1', link1);
+        localStorage.setItem('link2', link2);
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    function accessFiles() {
+      const password = prompt('Enter password to access files:');
+      if (password === 'aredwarpalo2543') {
+        window.location.href = 'https://drive.google.com/drive/folders/1tLRJWLm3vvFmmCtDJL1NOLJyIdXWMB3D?usp=sharing';
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    window.onload = () => {
+      document.getElementById('name').innerText = localStorage.getItem('name') || 'Your Name';
+      document.getElementById('dob').innerText = 'DOB: ' + (localStorage.getItem('dob') || '01/01/2000');
+      document.getElementById('phone').innerText = 'Phone: ' + (localStorage.getItem('phone') || '+91XXXXXXXXXX');
+      document.getElementById('email').innerText = 'Email: ' + (localStorage.getItem('email') || 'your@email.com');
+      document.getElementById('description').innerText = localStorage.getItem('description') || 'This is a short description about me.';
+      document.getElementById('link1').href = localStorage.getItem('link1') || '#';
+      document.getElementById('link2').href = localStorage.getItem('link2') || '#';
+      document.getElementById('profilePic').src = localStorage.getItem('profilePic') || '';
+    }
+  </script>
+</body>
+</html>
